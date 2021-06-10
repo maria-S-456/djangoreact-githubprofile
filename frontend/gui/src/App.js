@@ -6,14 +6,27 @@ import {Router} from '@reach/router'
 import './App.css';
 
 const App = () => { 
-  const [user, setUser] = useState({})
+  const [username, setUsername] = useState("")
+  const [profile, setProfile] = useState({})
+
+  useEffect(() => {
+      axios.get('https://api.github.com/users/' + username)
+      .then((res) => setProfile(res.data))
+      .catch((err) => console.log(err))
+  }, [])
 
   return (
     <>
-        <Router>
-          <ShowAll path="/showall" />
-          <ShowOne path="/showone/:login" />
-        </Router>    
+        <div>
+          <form onSubmit={(e) => setUsername(e.target.value)}>
+            <input type="text" />
+            <button type="submit">Find User</button>
+          </form>
+        </div>
+        <div>
+        {profile.login}
+        </div>
+
     </>
   );
 }
