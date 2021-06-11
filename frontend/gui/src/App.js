@@ -1,30 +1,21 @@
 import {useState, useEffect} from 'react';
-import axios from 'axios'
-import ShowAll from './components/ShowAll'
-import ShowOne from './components/ShowOne'
 import {Router} from '@reach/router'
 import './App.css';
+import Form from './components/Form'
+import Result from './components/Result'
+import NotFound from './components/NotFound'
 
 const App = () => { 
-  const [username, setUsername] = useState("")
-  const [profile, setProfile] = useState({})
-
-  useEffect(() => {
-      axios.get('https://api.github.com/users/' + username)
-      .then((res) => setProfile(res.data))
-      .catch((err) => console.log(err))
-  }, [])
+  const [result, setResult] = useState(null)
 
   return (
     <>
         <div>
-          <form onSubmit={(e) => setUsername(e.target.value)}>
-            <input type="text" />
-            <button type="submit">Find User</button>
-          </form>
-        </div>
-        <div>
-        {profile.login}
+          <Form setResult={setResult} />
+          <Router>
+            <Result path="/:id" result={result} />
+            <NotFound path="/obiwan" />
+          </Router>
         </div>
 
     </>
